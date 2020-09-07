@@ -331,13 +331,12 @@ CFAbsoluteTime serverActivity;
           body:(NSString *)body {
     NSMutableDictionary *msgHeaders = [NSMutableDictionary dictionaryWithDictionary:headers];
     msgHeaders[kNEHeaderDestination] = destination;
-    NSString *bodyEncode = [body stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    if (bodyEncode) {
-        msgHeaders[kNEHeaderContentLength] = [NSNumber numberWithLong:[bodyEncode length]];
+    if (body) {
+        msgHeaders[kNEHeaderContentLength] = [NSNumber numberWithLong:[[body dataUsingEncoding: NSUTF8StringEncoding] length]];
     }
     [self sendFrameWithCommand:kNECommandSend
                        headers:msgHeaders
-                          body:bodyEncode];
+                          body:body];
 }
 
 
